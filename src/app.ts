@@ -32,7 +32,7 @@ function start(client: any) {
 
         console.log("alterar minha senha")
 
-        this.sendText(message.from, "Digite sua nova senha:")
+        client.sendText(message.from, "Digite sua nova senha:")
 
         lastChoice = "alterar minha senha"
 
@@ -54,7 +54,7 @@ function start(client: any) {
 
         if (lastChoice == "alterar minha senha") {
 
-          this.sendButtons("5511932735086@c.us", this.menu)
+          client.sendButtons("5511932735086@c.us", this.menu)
             .then((result) => {
               this.sendText(message.from, "Menu de ajuda enviado ao usuário.")
               console.log('Result: ', result)
