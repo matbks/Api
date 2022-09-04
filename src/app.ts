@@ -49,7 +49,7 @@ function start(client: any) {
 
         console.log("outro usuário deseja alterar sua senha")
 
-        this.sendText(message.from, "Digite o número de telefone do usuário")
+          client.sendText(message.from, "Digite o número de telefone do usuário")
 
         menuLastClick = "numero de telefone do usuario"
 
@@ -72,17 +72,17 @@ function start(client: any) {
       
         break;
 
-        // case "numero de telefone do usuario":
+        case "numero de telefone do usuario":
 
-        //   console.log("enviar mensagem ao usuario")
+          console.log("enviar mensagem ao usuario")
 
-        //   // ENVIAR NOVA SENHA PARA O SAP
-        //   // SE RETORAR SUCESSO EXIBE MENSAGEM  
-        //   client.sendText(message.from, "Senha alterada com sucesso")
+          // ENVIAR NOVA SENHA PARA O SAP
+          // SE RETORAR SUCESSO EXIBE MENSAGEM  
+          client.sendText(message.from, "Senha alterada com sucesso")
   
-        //   menuLastClick = "numero"
+          menuLastClick = "numero"
       
-        // break;
+        break;
 
       }
 
