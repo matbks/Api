@@ -38,14 +38,14 @@ function start(client: any) {
 
         break;
 
-      case "outro usuário deseja alterar sua senha":
+      // case "outro usuário deseja alterar sua senha":
 
-        console.log("outro usuário deseja alterar sua senha")
+      //   console.log("outro usuário deseja alterar sua senha")
 
-        this.sendText(message.from, "Digite o número de telefone do usuário")
+      //   this.sendText(message.from, "Digite o número de telefone do usuário")
 
-        lastChoice = "numero de telefone do usuario"
-        break;
+      //   lastChoice = "numero de telefone do usuario"
+      //   break;
 
       default:
 
@@ -74,30 +74,24 @@ function start(client: any) {
 
         }
 
-        if (lastChoice == "numero de telefone do usuario") {
+        // if (lastChoice == "numero de telefone do usuario") {
 
-          // validNewPass()
-          // changePass()
+        //   console.log("outro usu")
 
-          console.log("outro usu")
-
-          // let userNumber = this.validNumber(message.body)
-
-          // this.sendButtons("5511932735086@c.us", this.menu)
-          this.sendButtons(message.from, this.menu)
-            .then((result) => {
-              this.sendText(message.from, "Menu de ajuda enviado ao usuário.")
-              console.log('Result: ', result)
-              lastChoice = ''
-            })
-            .catch((erro) => {
-              this.sendText(message.from, erro)
-              console.error('Error when sending: ', erro)
-              lastChoice = ''
-            });
+        //   this.sendButtons(message.from, this.menu)
+        //     .then((result) => {
+        //       this.sendText(message.from, "Menu de ajuda enviado ao usuário.")
+        //       console.log('Result: ', result)
+        //       lastChoice = ''
+        //     })
+        //     .catch((erro) => {
+        //       this.sendText(message.from, erro)
+        //       console.error('Error when sending: ', erro)
+        //       lastChoice = ''
+        //     });
 
 
-        }
+        // }
 
         break;
     }
