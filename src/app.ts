@@ -18,9 +18,9 @@ function start(client: any) {
 
   client.onMessage((message: any) => {
     
-    // let newMessage : string = message.body.toLowerCase()
+    let newMessage : string = message.body.toLowerCase()
 
-    switch (message.body.toLowerCase()) {
+    switch (message.body) {
 
       case "menu": 
 
