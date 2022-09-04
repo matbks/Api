@@ -45,16 +45,33 @@ function start(client: any) {
 
       break;
 
-      // case "outro usuário deseja alterar sua senha":
+      case "outro usuário deseja alterar sua senha":
 
-      //   console.log("outro usuário deseja alterar sua senha")
+        console.log("outro usuário deseja alterar sua senha")
 
-      //   this.sendText(message.from, "Digite o número de telefone do usuário")
+        this.sendText(message.from, "Digite o número de telefone do usuário")
 
-      //   menuLastClick = "numero de telefone do usuario"
-      //   break;
+        menuLastClick = "numero de telefone do usuario"
+
+      break;
 
       default:
+
+      switch (menuLastClick)
+      {
+        case "alterar minha senha":
+
+          console.log("salvar nova senha")
+
+          // ENVIAR NOVA SENHA PARA O SAP
+          // SE RETORAR SUCESSO EXIBE MENSAGEM  
+          client.sendText(message.from, "Senha alterada com sucesso")
+  
+          menuLastClick = "senha alterada"
+      
+        break;
+
+      }
 
 
         break;
