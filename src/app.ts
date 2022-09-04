@@ -17,8 +17,10 @@ create({
 function start(client: any) {
 
   client.onMessage((message: any) => {
+    
+    // let newMessage : string = message.body.toLowerCase()
 
-    switch (message.body) {
+    switch (message.body.toLowerCase()) {
 
       case "menu": 
 
@@ -30,14 +32,14 @@ function start(client: any) {
           .catch((erro: any) => {
             console.error('Error when sending: ', erro); //return object error
           });
-          
+
       break;
 
       case "alterar minha senha":
 
         console.log("alterar minha senha")
 
-        client.sendText(message.from, "Digite sua nova senha:")
+        client.sendText(message.from, "Digite sua nova senha")
 
         menuLastClick = "alterar minha senha"
 
