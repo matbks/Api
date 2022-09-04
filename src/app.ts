@@ -15,23 +15,23 @@ let screens = require('./screens.json');
 function start(client:any) {
   client.onMessage((message:any) => {
 
-    switch (message)
+    switch (message.body && message.isGroupMsg === false)
     {
         case "menu": {
+             
+            client
+              .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+              .then((result:any) => {
+                console.log('Result: ', result); //return object success
+              })
+              .catch((erro:any) => {
+                console.error('Error when sending: ', erro); //return object error
+              });
+          } 
 
         }
         break;
     }
-
-    if (message.body === 'Hi' && message.isGroupMsg === false) {
-      client
-        .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
-        .then((result:any) => {
-          console.log('Result: ', result); //return object success
-        })
-        .catch((erro:any) => {
-          console.error('Error when sending: ', erro); //return object error
-        });
-    }
   });
+    
 }
