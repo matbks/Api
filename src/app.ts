@@ -4,7 +4,7 @@ let screens = require('./screens.json');
 
 let menuLastClick = ''
 
-let client : Whatsapp
+let cliente : Whatsapp
 
 create({
   session: 'session-name', //name of session
@@ -17,7 +17,7 @@ create({
 
 function start(client: any) {
 
-  this.client = client
+  cliente = client
 
   client.onMessage((message: any) => {
      
