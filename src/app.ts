@@ -4,6 +4,8 @@ let screens = require('./screens.json');
 
 let menuLastClick = ''
 
+let client : Whatsapp
+
 create({
   session: 'session-name', //name of session
   multidevice: true // for version not multidevice use false.(default: true)
@@ -13,8 +15,9 @@ create({
     console.log(erro);
   });
 
-
 function start(client: any) {
+
+  this.client = client
 
   client.onMessage((message: any) => {
      
@@ -78,9 +81,9 @@ function start(client: any) {
 
           // ENVIAR NOVA SENHA PARA O SAP
           // SE RETORAR SUCESSO EXIBE MENSAGEM  
-          client.sendText(message.from, "Senha alterada com sucesso")
+          client.sendText(message.from, "Menu enviado ao usuário")
   
-          menuLastClick = "numero"
+          menuLastClick = "menu enviado"
       
         break;
 
