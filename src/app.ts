@@ -7,7 +7,7 @@ let menuLastClick = ''
 
 let cliente : Whatsapp
 
-let app = express()
+const app = express()
 
 app.post('/send', (request, response) => {
 
@@ -25,7 +25,6 @@ app.post('/send', (request, response) => {
                       }
       
   })
-  
   
 
 
