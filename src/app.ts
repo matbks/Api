@@ -1,3 +1,4 @@
+import express, { Request, Response, Router } from "express"
 import { create, Whatsapp } from 'venom-bot';
 
 let screens = require('./screens.json');
@@ -5,6 +6,28 @@ let screens = require('./screens.json');
 let menuLastClick = ''
 
 let cliente : Whatsapp
+
+let app = express()
+
+app.post('/send', (request, response) => {
+
+      try { 
+                          let { number, message } = request.body
+                          number = number.toLowerCase();
+                          console.log(number)
+                          console.log(message)
+                          cliente.sendText(number, message)
+                          return response.sendStatus(200).json();
+                      }
+                      catch (error) {
+                          console.error(error);
+                          response.send(500).json({ status: "error", message: error })
+                      }
+      
+  })
+  
+  
+
 
 create({
   session: 'session-name', //name of session
@@ -94,5 +117,7 @@ function start(client: any) {
     }
 
   });
+
+ app.listen(5000);
 
 }
