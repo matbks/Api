@@ -1,8 +1,9 @@
-// Supports ES6
 import { create, Whatsapp } from 'venom-bot';
-// import screens from './screens.json';
+
 let screens = require('./screens.json');
-let lastChoice = ''
+
+let menuLastClick = ''
+
 create({
   session: 'session-name', //name of session
   multidevice: true // for version not multidevice use false.(default: true)
@@ -12,11 +13,14 @@ create({
     console.log(erro);
   });
 
+
 function start(client: any) {
+
   client.onMessage((message: any) => {
 
     switch (message.body) {
-      case "menu": {
+
+      case "menu": 
 
         client
           .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
@@ -26,7 +30,8 @@ function start(client: any) {
           .catch((erro: any) => {
             console.error('Error when sending: ', erro); //return object error
           });
-      }
+          
+      break;
 
       case "alterar minha senha":
 
@@ -34,9 +39,9 @@ function start(client: any) {
 
         client.sendText(message.from, "Digite sua nova senha:")
 
-        lastChoice = "alterar minha senha"
+        menuLastClick = "alterar minha senha"
 
-        break;
+      break;
 
       // case "outro usuário deseja alterar sua senha":
 
@@ -44,54 +49,11 @@ function start(client: any) {
 
       //   this.sendText(message.from, "Digite o número de telefone do usuário")
 
-      //   lastChoice = "numero de telefone do usuario"
+      //   menuLastClick = "numero de telefone do usuario"
       //   break;
 
       default:
 
-        // console.log("default")
-        // console.log(message.body)
-
-        // if (lastChoice == "alterar minha senha") {
-
-        //   client.sendButtons("5511932735086@c.us",)
-        //     .then((result) => {
-        //       this.sendText(message.from, "Menu de ajuda enviado ao usuário.")
-        //       console.log('Result: ', result)
-        //       lastChoice = ''
-        //     })
-        //     .catch((erro) => {
-        //       this.sendText(message.from, erro)
-        //       console.error('Error when sending: ', erro)
-        //       lastChoice = ''
-        //     });
-
-        //   // validNewPass()
-        //   // changePass()
-        //   this.sendText(message.from, "Senha alterada com sucesso!")
-
-        //   lastChoice = ''
-
-        // }
-
-        // if (lastChoice == "numero de telefone do usuario") {
-
-        //   console.log("outro usu")
-
-        //   this.sendButtons(message.from, this.menu)
-        //     .then((result) => {
-        //       this.sendText(message.from, "Menu de ajuda enviado ao usuário.")
-        //       console.log('Result: ', result)
-        //       lastChoice = ''
-        //     })
-        //     .catch((erro) => {
-        //       this.sendText(message.from, erro)
-        //       console.error('Error when sending: ', erro)
-        //       lastChoice = ''
-        //     });
-
-
-        // }
 
         break;
     }
