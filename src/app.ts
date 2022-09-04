@@ -15,7 +15,7 @@ let screens = require('./screens.json');
 function start(client:any) {
   client.onMessage((message:any) => {
 
-    switch (message.body && message.isGroupMsg === false)
+    switch (message.body)
     {
         case "menu": {
 
