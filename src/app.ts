@@ -18,7 +18,7 @@ function start(client:any) {
     switch (message.body && message.isGroupMsg === false)
     {
         case "menu": {
-             
+
             client
               .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
               .then((result:any) => {
@@ -29,9 +29,10 @@ function start(client:any) {
               });
           } 
 
-        }
+        
         break;
     }
-  });
-    
+
+    });
+  
 }
