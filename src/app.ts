@@ -11,6 +11,8 @@ const app = express()
 
 app.post('/send', (request, response) => {
 
+  console.log('/send')
+
       try { 
                           let { number, message } = request.body
                           number = number.toLowerCase();
@@ -82,12 +84,37 @@ function start(client: any) {
 
       default:
 
-      switch (menuLastClick)
-      {
+      switch (menuLastClick) {
 
         case "alterar minha senha":
 
           console.log("salvar nova senha")
+          let value = 0
+          let headers = {'content-type': 'text/xml; charset=utf-8'}    
+          let body =  `
+                      <?xml version="1.0" encoding="UTF-8"?>
+                      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:soap:functions:mc-style">
+                      <soapenv:Header/>
+                      <soapenv:Body>
+                      <urn:ZfmSecIot>
+                      <Input>
+                  `       
+          body += value
+          body += ` </Input>
+                      </urn:ZfmSecIot>
+                      </soapenv:Body>
+                      </soapenv:Envelope>
+                  `
+
+
+
+          const response =  fetch("http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
+            method: 'POST',
+            credentials:
+            body: body,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
+          
+          if (!response.ok) { /* Handle */ }
 
           // ENVIAR NOVA SENHA PARA O SAP
           // SE RETORAR SUCESSO EXIBE MENSAGEM  
@@ -111,8 +138,8 @@ function start(client: any) {
 
       }
 
-
         break;
+
     }
 
   });
