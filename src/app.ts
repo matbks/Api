@@ -72,7 +72,7 @@ function start(client: any) {
 
         //   lastChoice = ''
 
-        }
+        // }
 
         // if (lastChoice == "numero de telefone do usuario") {
 
