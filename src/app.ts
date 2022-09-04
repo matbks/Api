@@ -71,6 +71,18 @@ function start(client: any) {
       
         break;
 
+        case "numero de telefone do usuario":
+
+          console.log("salvar nova senha")
+
+          // ENVIAR NOVA SENHA PARA O SAP
+          // SE RETORAR SUCESSO EXIBE MENSAGEM  
+          client.sendText(message.from, "Senha alterada com sucesso")
+  
+          menuLastClick = "senha alterada"
+      
+        break;
+
       }
 
 
