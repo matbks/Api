@@ -49,28 +49,28 @@ function start(client: any) {
 
       default:
 
-        console.log("default")
-        console.log(message.body)
+        // console.log("default")
+        // console.log(message.body)
 
-        if (lastChoice == "alterar minha senha") {
+        // if (lastChoice == "alterar minha senha") {
 
-          client.sendButtons("5511932735086@c.us", this.menu)
-            .then((result) => {
-              this.sendText(message.from, "Menu de ajuda enviado ao usuário.")
-              console.log('Result: ', result)
-              lastChoice = ''
-            })
-            .catch((erro) => {
-              this.sendText(message.from, erro)
-              console.error('Error when sending: ', erro)
-              lastChoice = ''
-            });
+        //   client.sendButtons("5511932735086@c.us",)
+        //     .then((result) => {
+        //       this.sendText(message.from, "Menu de ajuda enviado ao usuário.")
+        //       console.log('Result: ', result)
+        //       lastChoice = ''
+        //     })
+        //     .catch((erro) => {
+        //       this.sendText(message.from, erro)
+        //       console.error('Error when sending: ', erro)
+        //       lastChoice = ''
+        //     });
 
-          // validNewPass()
-          // changePass()
-          this.sendText(message.from, "Senha alterada com sucesso!")
+        //   // validNewPass()
+        //   // changePass()
+        //   this.sendText(message.from, "Senha alterada com sucesso!")
 
-          lastChoice = ''
+        //   lastChoice = ''
 
         }
 
