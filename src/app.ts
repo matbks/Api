@@ -43,6 +43,8 @@ create({
 
 function validNumber(phoneNumber: string) {
 
+  phoneNumber = '89526065'
+
   console.log("vmo ve se e valido")
   console.log(phoneNumber)
 
