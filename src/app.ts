@@ -1,8 +1,8 @@
-
+import parsePhoneNumber, { isValidPhoneNumber } from "libphonenumber-js"
 import { create, Whatsapp } from 'venom-bot';
 import fetch from 'node-fetch';
 import express from 'express'
-import * as screens from './screens.json'; 
+import * as screens from './screens.json';
 // let screens = require('./screens.json');
 
 let menuLastClick = ''
@@ -41,7 +41,33 @@ create({
     console.log(erro);
   });
 
-async function request(){
+function validNumber(phoneNumber: string) {
+
+
+  if (isValidPhoneNumber(phoneNumber)) {
+
+    phoneNumber = parsePhoneNumber(phoneNumber, "BR")
+      ?.format("E.164")
+      ?.replace("+", "") as string
+
+    phoneNumber = phoneNumber.includes("55")
+      ? phoneNumber
+      : `55${phoneNumber}`
+
+    phoneNumber = phoneNumber.includes("@c.us")
+      ? phoneNumber
+      : `${phoneNumber}@c.us`
+
+    return phoneNumber
+  }
+
+  else {
+    phoneNumber = ''
+    return phoneNumber
+  }
+}
+
+async function request() {
 
   let value = 'I_USER'
   let headers = { 'content-type': 'text/xml; charset=utf-8' }
@@ -69,7 +95,7 @@ async function request(){
   //   headers: {'content-type': 'text/xml; charset=utf-8'}});
 
   // console.log(response.body)
-  
+
 }
 function start(client: any) {
 
@@ -138,7 +164,7 @@ function start(client: any) {
                       </soapenv:Envelope>
                   `
 
-          
+
 
             // ENVIAR NOVA SENHA PARA O SAP
             // SE RETORAR SUCESSO EXIBE MENSAGEM  
@@ -153,10 +179,25 @@ function start(client: any) {
             console.log("enviar mensagem ao usuario")
 
             // ENVIAR NOVA SENHA PARA O SAP
-            // SE RETORAR SUCESSO EXIBE MENSAGEM  
-            client.sendText(message.from, "Menu enviado ao usuário")
+            // SE RETORAR SUCESSO EXIBE MENSAGEM
+            let userNumber = validNumber(newMessage)
 
-            menuLastClick = "menu enviado"
+            if (userNumber != ''){
+
+              client
+              .sendButtons(userNumber, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+              .then((result: any) => {
+                console.log('Result: ', result); //return object success
+                client.sendText(message.from, "Menu enviado ao usuário")
+                menuLastClick = "menu enviado ao usuario"
+              })
+              .catch((erro: any) => {
+                console.error('Error when sending: ', erro); //return object error
+                client.sendText(message.from, "Numéro do usuário inválido")
+                menuLastClick = "menu não enviado ao usuario"
+              });            
+
+            
 
             break;
 
