@@ -40,6 +40,33 @@ create({
     console.log(erro);
   });
 
+async function request(){
+
+  let value = 'I_USER'
+  let headers = { 'content-type': 'text/xml; charset=utf-8' }
+  let body = `
+            <?xml version="1.0" encoding="UTF-8"?>
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:soap:functions:mc-style">
+            <soapenv:Header/>
+            <soapenv:Body>
+            <urn:ZfmSecIot>
+            <Input>
+        `
+  body += value
+  body += ` </Input>
+            </urn:ZfmSecIot>
+            </soapenv:Body>
+            </soapenv:Envelope>
+        `
+
+  const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
+    method: 'POST',
+    body: body,
+    // headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
+    headers: {'content-type': 'text/xml; charset=utf-8'}});
+
+  if (!response.ok) { /* Handle */ }
+}
 function start(client: any) {
 
   cliente = client
@@ -107,12 +134,7 @@ function start(client: any) {
                       </soapenv:Envelope>
                   `
 
-            const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
-              method: 'POST',
-              body: body,
-              headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
-
-            if (!response.ok) { /* Handle */ }
+             request();
 
             // ENVIAR NOVA SENHA PARA O SAP
             // SE RETORAR SUCESSO EXIBE MENSAGEM  
