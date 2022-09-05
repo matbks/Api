@@ -107,7 +107,7 @@ function start(client: any) {
 
     switch (newMessage) {
 
-      case "menu":
+      case "sim":
 
         client
           .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
@@ -201,7 +201,6 @@ function start(client: any) {
               client.sendText(message.from, "Numéro do usuário inválido")
             }
             
-
             break;
 
         }
