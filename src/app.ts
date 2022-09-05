@@ -1,6 +1,7 @@
-import express, { Request, Response, Router } from "express"
+
 import { create, Whatsapp } from 'venom-bot';
 import fetch from 'node-fetch';
+import express, { Request, Response, Router } from "express"
 
 let screens = require('./screens.json');
 
@@ -106,13 +107,12 @@ function start(client: any) {
                       </soapenv:Envelope>
                   `
 
-            // const response =  fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
-            //   method: 'POST',
-            //   credentials: "include",
-            //   body: body,
-            //   headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
+            const response =  fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
+              method: 'POST',
+              body: body,
+              headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
 
-            // if (!response.ok) { /* Handle */ }
+            if (!response.ok) { /* Handle */ }
 
             // ENVIAR NOVA SENHA PARA O SAP
             // SE RETORAR SUCESSO EXIBE MENSAGEM  
