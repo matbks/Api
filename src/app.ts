@@ -140,7 +140,7 @@ function start(client: any) {
 
         break;
 
-      case "Desbloquear minha senha":
+      case "desbloquear minha senha":
 
         console.log("Desbloquear minha senha")
 
