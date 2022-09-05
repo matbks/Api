@@ -196,7 +196,10 @@ function start(client: any) {
                 client.sendText(message.from, "Numéro do usuário inválido")
                 menuLastClick = "menu não enviado ao usuario"
               });            
-
+            }
+            else{
+              client.sendText(message.from, "Numéro do usuário inválido")
+            }
             
 
             break;
