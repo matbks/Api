@@ -62,13 +62,13 @@ async function request(){
 
   // const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-  const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
-    method: 'POST',
-    body: body,
-    // headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
-    headers: {'content-type': 'text/xml; charset=utf-8'}});
+  // const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
+  //   method: 'POST',
+  //   body: body,
+  //   // headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
+  //   headers: {'content-type': 'text/xml; charset=utf-8'}});
 
-  console.log(response.body)
+  // console.log(response.body)
 }
 function start(client: any) {
 
