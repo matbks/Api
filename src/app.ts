@@ -240,7 +240,8 @@ async function start(client: any) {
                   console.error('Error when sending: ', erro); //return object error
                   client.sendText(message.from, "Numéro do usuário inválido")
                   menuLastClick = "menu não enviado ao usuario"
-                });            
+                });     
+              }       
 
             break;
 
