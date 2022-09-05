@@ -43,6 +43,8 @@ create({
 
 function validNumber(phoneNumber: string) {
 
+  console.log("vmo ve se e valido")
+  console.log(phoneNumber)
 
   if (isValidPhoneNumber(phoneNumber)) {
 
@@ -191,7 +193,7 @@ function start(client: any) {
 
             // ENVIAR NOVA SENHA PARA O SAP
             // SE RETORAR SUCESSO EXIBE MENSAGEM
-            let userNumber = validNumber(message.body)
+            let userNumber = validNumber(newMessage)
 
             if (userNumber != ''){
 
