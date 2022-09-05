@@ -60,7 +60,7 @@ async function request(){
             </soapenv:Envelope>
         `
 
-  const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+  // const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
   // const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
   //   method: 'POST',
