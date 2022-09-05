@@ -1,7 +1,7 @@
 
 import { create, Whatsapp } from 'venom-bot';
 import fetch from 'node-fetch';
-import express, { Request, Response, Router } from "express"
+import express from "express"
 
 let screens = require('./screens.json');
 
@@ -40,7 +40,7 @@ create({
     console.log(erro);
   });
 
-function start(client: any) {
+async function start(client: any) {
 
   cliente = client
 
@@ -107,7 +107,7 @@ function start(client: any) {
                       </soapenv:Envelope>
                   `
 
-            const response =  fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
+            const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
               method: 'POST',
               body: body,
               headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
