@@ -1,15 +1,16 @@
 
 import { create, Whatsapp } from 'venom-bot';
 import fetch from 'node-fetch';
-import express from "express"
-
-let screens = require('./screens.json');
+import express from 'express'
+import screens from './screens.json';
+// let screens = require('./screens.json');
 
 let menuLastClick = ''
 
 let cliente: Whatsapp
 
 const app = express()
+
 app.use(express.json())
 
 app.post('/send', (request, response) => {
@@ -59,13 +60,16 @@ async function request(){
             </soapenv:Envelope>
         `
 
-  const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
-    method: 'POST',
-    body: body,
-    // headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
-    headers: {'content-type': 'text/xml; charset=utf-8'}});
+  const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-  if (!response.ok) { /* Handle */ }
+  // const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
+  //   method: 'POST',
+  //   body: body,
+  //   // headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
+  //   headers: {'content-type': 'text/xml; charset=utf-8'}});
+
+  // if (!response.ok) { /* Handle */ }
+
 }
 function start(client: any) {
 
@@ -134,7 +138,7 @@ function start(client: any) {
                       </soapenv:Envelope>
                   `
 
-             request();
+          
 
             // ENVIAR NOVA SENHA PARA O SAP
             // SE RETORAR SUCESSO EXIBE MENSAGEM  
