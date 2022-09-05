@@ -46,8 +46,7 @@ function validNumber(phoneNumber: string) {
   console.log("vmo ve se e valido")
   console.log(phoneNumber)
 
-    if (isPossiblePhoneNumber(phoneNumber))
-    {
+    
       console.info("PhoneNumber", phoneNumber)
       phoneNumber = parsePhoneNumber(phoneNumber, "BR")
       ?.format("E.164")
@@ -58,7 +57,9 @@ function validNumber(phoneNumber: string) {
       ? phoneNumber
       : `55${phoneNumber}`
 
-      console.info("3PhoneNumber", phoneNumber)
+    if (isPossiblePhoneNumber(phoneNumber))
+    {
+      console.info("É um numero psosivel", phoneNumber)
 
     phoneNumber = phoneNumber.includes("@c.us")
       ? phoneNumber
