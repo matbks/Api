@@ -42,24 +42,29 @@ create({
   });
 
 function validNumber(phoneNumber: string) {
-
-  console.log("vmo ve se e valido")
-  console.log(phoneNumber)
-
     
-      console.info("PhoneNumber", phoneNumber)
       phoneNumber = parsePhoneNumber(phoneNumber, "BR")
       ?.format("E.164")
-      ?.replace("+", "") as string
+      ?.replace("+", "") 
+      ?.replace("-" , "") as string
 
-      console.info("2PhoneNumber", phoneNumber)
     phoneNumber = phoneNumber.includes("55")
       ? phoneNumber
       : `55${phoneNumber}`
 
+      console.info("sera se tem 9", phoneNumber)
+    if (phoneNumber.length < 11 && phoneNumber[2] != '9')
+    {
+      console.info("n tem nova", phoneNumber)
+      phoneNumber =  phoneNumber.slice(0, 4) + '9' + phoneNumber.slice(5, phoneNumber.length) 
+    }
+      
+    console.info("Resultado", phoneNumber)
+      
+
     if (isPossiblePhoneNumber(phoneNumber))
     {
-      console.info("É um numero psosivel", phoneNumber)
+      console.info("É um numero possível", phoneNumber)
 
     phoneNumber = phoneNumber.includes("@c.us")
       ? phoneNumber
