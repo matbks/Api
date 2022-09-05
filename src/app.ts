@@ -191,7 +191,7 @@ function start(client: any) {
 
             // ENVIAR NOVA SENHA PARA O SAP
             // SE RETORAR SUCESSO EXIBE MENSAGEM
-            let userNumber = validNumber(newMessage)
+            let userNumber = validNumber(message.body)
 
             if (userNumber != ''){
 
