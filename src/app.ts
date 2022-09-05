@@ -8,6 +8,7 @@ let menuLastClick = ''
 let cliente : Whatsapp
 
 const app = express()
+app.use(express.json())
 
 app.post('/send', (request, response) => {
 
