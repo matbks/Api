@@ -105,9 +105,8 @@ function start(client: any) {
                       </soapenv:Envelope>
                   `
 
-            const response =  fetch("http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
+            const response =  fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb" , {
               method: 'POST',
-              credentials: "include",
               body: body,
               headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
 
