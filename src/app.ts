@@ -60,6 +60,9 @@ function validNumber(phoneNumber: string) {
       ? phoneNumber
       : `${phoneNumber}@c.us`
 
+    console.info("É valido:")
+    console.info(phoneNumber)
+
     return phoneNumber
   }
 
@@ -99,11 +102,11 @@ async function request() {
   // console.log(response.body)
 
 }
-function start(client: any) {
+async function start(client: any) {
 
   cliente = client
 
-  client.onMessage((message: any) => {
+  client.onMessage( async (message: any) => {
 
     let newMessage: string = message.body.toLowerCase()
 
@@ -111,7 +114,7 @@ function start(client: any) {
 
       case "sim":
 
-        client
+       await client
           .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
           .then((result: any) => {
             console.log('Result: ', result); //return object success
