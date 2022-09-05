@@ -221,27 +221,27 @@ async function start(client: any) {
 
             default:
 
-              console.log("enviar mensagem ao usuario")
+              // console.log("enviar mensagem ao usuario")
 
-              // ENVIAR NOVA SENHA PARA O SAP
-              // SE RETORAR SUCESSO EXIBE MENSAGEM
-              let userNumber2 = validNumber(newMessage)
+              // // ENVIAR NOVA SENHA PARA O SAP
+              // // SE RETORAR SUCESSO EXIBE MENSAGEM
+              // let userNumber2 = validNumber(newMessage)
   
-              if (userNumber2 != ''){
+              // if (userNumber2 != ''){
   
-                client
-                .sendButtons(userNumber2, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
-                .then((result: any) => {
-                  console.log('Result: ', result); //return object success
-                  client.sendText(message.from, "Menu enviado ao usuário")
-                  menuLastClick = "menu enviado ao usuario"
-                })
-                .catch((erro: any) => {
-                  console.error('Error when sending: ', erro); //return object error
-                  client.sendText(message.from, "Numéro do usuário inválido")
-                  menuLastClick = "menu não enviado ao usuario"
-                });     
-              }       
+              //   client
+              //   .sendButtons(userNumber2, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+              //   .then((result: any) => {
+              //     console.log('Result: ', result); //return object success
+              //     client.sendText(message.from, "Menu enviado ao usuário")
+              //     menuLastClick = "menu enviado ao usuario"
+              //   })
+              //   .catch((erro: any) => {
+              //     console.error('Error when sending: ', erro); //return object error
+              //     client.sendText(message.from, "Numéro do usuário inválido")
+              //     menuLastClick = "menu não enviado ao usuario"
+              //   });     
+              // }       
 
             break;
 
