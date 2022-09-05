@@ -40,7 +40,7 @@ create({
     console.log(erro);
   });
 
-async function start(client: any) {
+function start(client: any) {
 
   cliente = client
 
