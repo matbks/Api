@@ -2,7 +2,7 @@
 import { create, Whatsapp } from 'venom-bot';
 import fetch from 'node-fetch';
 import express from 'express'
-import screens from './screens.json';
+import * as screens from './screens.json'; 
 // let screens = require('./screens.json');
 
 let menuLastClick = ''
