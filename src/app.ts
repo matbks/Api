@@ -48,13 +48,17 @@ function validNumber(phoneNumber: string) {
 
     if (isPossiblePhoneNumber(phoneNumber))
     {
+      console.info("PhoneNumber", phoneNumber)
       phoneNumber = parsePhoneNumber(phoneNumber, "BR")
       ?.format("E.164")
       ?.replace("+", "") as string
 
+      console.info("2PhoneNumber", phoneNumber)
     phoneNumber = phoneNumber.includes("55")
       ? phoneNumber
       : `55${phoneNumber}`
+
+      console.info("3PhoneNumber", phoneNumber)
 
     phoneNumber = phoneNumber.includes("@c.us")
       ? phoneNumber
@@ -163,7 +167,8 @@ async function start(client: any) {
           case "alterar minha senha":
 
             console.log("salvar nova senha")
-            let value = 0
+
+            let value = 'I_VALUE'
             let headers = { 'content-type': 'text/xml; charset=utf-8' }
             let body = `
                       <?xml version="1.0" encoding="UTF-8"?>
@@ -179,8 +184,6 @@ async function start(client: any) {
                       </soapenv:Body>
                       </soapenv:Envelope>
                   `
-
-
 
             // ENVIAR NOVA SENHA PARA O SAP
             // SE RETORAR SUCESSO EXIBE MENSAGEM  
