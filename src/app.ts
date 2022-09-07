@@ -1,36 +1,44 @@
 import parsePhoneNumber, { isValidPhoneNumber, isPossiblePhoneNumber } from "libphonenumber-js"
 import { create, Whatsapp } from 'venom-bot';
-import fetch from 'node-fetch';
 import express from 'express'
-import * as screens from './screens.json';
-// let screens = require('./screens.json');
+import * as screens from './screens.json'
 
+// const axios = require('axios-https-proxy-fix');
+// const fs = require('fs');""
 let menuLastClick = ''
-
+import fetch, { Headers } from 'node-fetch';
 let cliente: Whatsapp
 
 const app = express()
 
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-app.post('/send', (request, response) => {
 
-  console.log('/send')
 
-  try {
-    let { number, message } = request.body
-    number = number.toLowerCase();
-    console.log(number)
-    console.log(message)
-    cliente.sendText(number, message)
-    return response.sendStatus(200).json();
-  }
-  catch (error) {
-    console.error(error);
-    response.send(500).json({ status: "error", message: error })
-  }
+// app.post('/send', (request, response) => {
 
-})
+//   console.log('/send')
+
+//   try {
+//     let { number, message } = request.body
+
+//     if (number && message){
+//     number = number.toLowerCase();
+//     console.log(number)
+//     console.log(message)
+//     cliente.sendText(number, message)
+//     return response.sendStatus(200).json();
+//   }
+//   }
+//   catch (error) {
+//     console.error(error);
+//     response.send(500).json({ status: "error", message: error })
+//   }
+
+// })
+
+request();
 
 create({
   session: 'session-name', //name of session
@@ -41,30 +49,33 @@ create({
     console.log(erro);
   });
 
+  // POST method route
+app.post('/handle', function async (req, res) {
+  res.send(req.body);
+  console.info(req.body)
+});
+
 function validNumber(phoneNumber: string) {
-    
-      phoneNumber = parsePhoneNumber(phoneNumber, "BR")
-      ?.format("E.164")
-      ?.replace("+", "") 
-      ?.replace("-" , "") as string
 
-    phoneNumber = phoneNumber.includes("55")
-      ? phoneNumber
-      : `55${phoneNumber}`
+  phoneNumber = parsePhoneNumber(phoneNumber, "BR")
+    ?.format("E.164")
+    ?.replace("+", "")
+    ?.replace("-", "") as string
 
-      console.info("sera se tem 9", phoneNumber)
-    if (phoneNumber.length < 11 && phoneNumber[2] != '9')
-    {
-      console.info("n tem nova", phoneNumber)
-      phoneNumber =  phoneNumber.slice(0, 4) + '9' + phoneNumber.slice(5, phoneNumber.length) 
-    }
-      
-    console.info("Resultado", phoneNumber)
-      
+  phoneNumber = phoneNumber.includes("55")
+    ? phoneNumber
+    : `55${phoneNumber}`
 
-    if (isPossiblePhoneNumber(phoneNumber))
-    {
-      console.info("É um numero possível", phoneNumber)
+  console.info("sera se tem 9", phoneNumber)
+  if (phoneNumber.length < 11 && phoneNumber[2] != '9') {
+    console.info("n tem nova", phoneNumber)
+    phoneNumber = phoneNumber.slice(0, 4) + '9' + phoneNumber.slice(5, phoneNumber.length)
+  }
+
+  console.info("Resultado", phoneNumber)
+
+  if (isPossiblePhoneNumber(phoneNumber)) {
+    console.info("É um numero possível", phoneNumber)
 
     phoneNumber = phoneNumber.includes("@c.us")
       ? phoneNumber
@@ -84,183 +95,170 @@ function validNumber(phoneNumber: string) {
 
 async function request() {
 
-  let value = 'I_USER'
-  let headers = { 'content-type': 'text/xml; charset=utf-8' }
-  let body = `
-            <?xml version="1.0" encoding="UTF-8"?>
-            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:soap:functions:mc-style">
-            <soapenv:Header/>
-            <soapenv:Body>
-            <urn:ZfmSecIot>
-            <Input>
-        `
-  body += value
-  body += ` </Input>
-            </urn:ZfmSecIot>
-            </soapenv:Body>
-            </soapenv:Envelope>
-        `
+  console.log("Requesting")
 
-  // const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+  var value = '44'
 
-  // const response = await fetch( "http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb", {
-  //   method: 'POST',
-  //   body: body,
-  //   // headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'} });
-  //   headers: {'content-type': 'text/xml; charset=utf-8'}});
+  const body = '<?xml version="1.0" encoding="UTF-8"?>' +
+    '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" '+
+    'xmlns:urn="urn:sap-com:document:sap:soap:functions:mc-style">' +
+    '<soapenv:Header/>' +
+    '<soapenv:Body>' +
+    '<urn:ZfmSecIot>' +
+    '<Input>' +
+    value +
+    '</Input>' +
+    '</urn:ZfmSecIot>' +
+    '</soapenv:Body>' +
+    '</soapenv:Envelope>';
 
-  // console.log(response.body)
+  const url = 'http://vm31.4hub.cloud:53100/sap/bc/srt/rfc/sap/zwsseciot/100/zwsseciot/zwsseciotb';
+
+  const requestHeaders: any = new Headers();
+  requestHeaders.set('Content-Type', 'text/xml');
+  requestHeaders.set('Authorization', 'Basic ' + Buffer.from("MBACKHAUS" + ":" + "Red@2020").toString('base64'));
+
+  const responseLogin = await fetch(url, {
+    method: 'POST',
+    headers: requestHeaders,
+    body: body
+  });
+
+  console.log(responseLogin)
 
 }
+
 async function start(client: any) {
 
   cliente = client
 
-  client.onMessage( async (message: any) => {
+  client.onMessage(async (message: any) => {
+    if (message.body) {
+      let newMessage: string = message.body.toLowerCase()
 
-    let newMessage: string = message.body.toLowerCase()
+      switch (newMessage) {
 
-    switch (newMessage) {
+        case "sim":
 
-      case "sim":
+          await client
+            .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+            .then((result: any) => {
+              console.log('Result: ', result); //return object success
+            })
+            .catch((erro: any) => {
+              console.error('Error when sending: ', erro); //return object error
+            });
 
-       await client
-          .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
-          .then((result: any) => {
-            console.log('Result: ', result); //return object success
-          })
-          .catch((erro: any) => {
-            console.error('Error when sending: ', erro); //return object error
-          });
+          break;
 
-        break;
+        case "alterar minha senha":
 
-      case "alterar minha senha":
+          console.log("alterar minha senha")
 
-        console.log("alterar minha senha")
+          client.sendText(message.from, "Digite sua nova senha")
 
-        client.sendText(message.from, "Digite sua nova senha")
+          menuLastClick = "alterar minha senha"
 
-        menuLastClick = "alterar minha senha"
+          break;
 
-        break;
+        case "outro usuário deseja alterar sua senha":
 
-      case "outro usuário deseja alterar sua senha":
+          console.log("outro usuário deseja alterar sua senha")
 
-        console.log("outro usuário deseja alterar sua senha")
+          client.sendText(message.from, "Digite o número de telefone do usuário")
 
-        client.sendText(message.from, "Digite o número de telefone do usuário")
+          menuLastClick = "numero de telefone do usuario"
 
-        menuLastClick = "numero de telefone do usuario"
+          break;
 
-        break;
+        case "desbloquear minha senha":
 
-      case "desbloquear minha senha":
+          console.log("Desbloquear minha senha")
 
-        console.log("Desbloquear minha senha")
+          client.sendText(message.from, "Senha desbloqueada")
 
-        client.sendText(message.from, "Senha desbloqueada")
+          menuLastClick = "senha desbloqueada"
 
-        menuLastClick = "senha desbloqueada"
+          break;
 
-        break;
+        default:
 
+          switch (menuLastClick) {
 
-      default:
+            case "alterar minha senha":
 
-        switch (menuLastClick) {
+              console.log("salvar nova senha")
 
-          case "alterar minha senha":
+              // ENVIAR NOVA SENHA PARA O SAP
+              // SE RETORAR SUCESSO EXIBE MENSAGEM  
+              client.sendText(message.from, "Senha alterada com sucesso")
 
-            console.log("salvar nova senha")
+              menuLastClick = "senha alterada"
 
-            let value = 'I_VALUE'
-            let headers = { 'content-type': 'text/xml; charset=utf-8' }
-            let body = `
-                      <?xml version="1.0" encoding="UTF-8"?>
-                      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:sap-com:document:sap:soap:functions:mc-style">
-                      <soapenv:Header/>
-                      <soapenv:Body>
-                      <urn:ZfmSecIot>
-                      <Input>
-                  `
-            body += value
-            body += ` </Input>
-                      </urn:ZfmSecIot>
-                      </soapenv:Body>
-                      </soapenv:Envelope>
-                  `
+              break;
 
-            // ENVIAR NOVA SENHA PARA O SAP
-            // SE RETORAR SUCESSO EXIBE MENSAGEM  
-            client.sendText(message.from, "Senha alterada com sucesso")
+            case "numero de telefone do usuario":
 
-            menuLastClick = "senha alterada"
+              console.log("enviar mensagem ao usuario")
 
-            break;
+              // ENVIAR NOVA SENHA PARA O SAP
+              // SE RETORAR SUCESSO EXIBE MENSAGEM
+              let userNumber = validNumber(newMessage)
 
-          case "numero de telefone do usuario":
+              if (userNumber != '') {
 
-            console.log("enviar mensagem ao usuario")
-
-            // ENVIAR NOVA SENHA PARA O SAP
-            // SE RETORAR SUCESSO EXIBE MENSAGEM
-            let userNumber = validNumber(newMessage)
-
-            if (userNumber != ''){
-
-              client
-              .sendButtons(userNumber, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
-              .then((result: any) => {
-                console.log('Result: ', result); //return object success
-                client.sendText(message.from, "Menu enviado ao usuário")
-                menuLastClick = "menu enviado ao usuario"
-              })
-              .catch((erro: any) => {
-                console.error('Error when sending: ', erro); //return object error
+                client
+                  .sendButtons(userNumber, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+                  .then((result: any) => {
+                    console.log('Result: ', result); //return object success
+                    client.sendText(message.from, "Menu enviado ao usuário")
+                    menuLastClick = "menu enviado ao usuario"
+                  })
+                  .catch((erro: any) => {
+                    console.error('Error when sending: ', erro); //return object error
+                    client.sendText(message.from, "Numéro do usuário inválido")
+                    menuLastClick = "menu não enviado ao usuario"
+                  });
+              }
+              else {
                 client.sendText(message.from, "Numéro do usuário inválido")
-                menuLastClick = "menu não enviado ao usuario"
-              });            
-            }
-            else{
-              client.sendText(message.from, "Numéro do usuário inválido")
-            }
-            
-            break;
+              }
+
+              break;
 
             default:
 
-              // console.log("enviar mensagem ao usuario")
-
-              // // ENVIAR NOVA SENHA PARA O SAP
-              // // SE RETORAR SUCESSO EXIBE MENSAGEM
               let userNumber2 = validNumber("8956065")
-  
-              if (userNumber2 != ''){
-  
+
+              if (userNumber2 != '') {
+
                 client
-                .sendButtons(userNumber2, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
-                .then((result: any) => {
-                  console.log('Result: ', result); //return object success
-                  client.sendText(message.from, "Menu enviado ao usuário")
-                  menuLastClick = "menu enviado ao usuario"
-                })
-                .catch((erro: any) => {
-                  console.error('Error when sending: ', erro); //return object error
-                  client.sendText(message.from, "Numéro do usuário inválido")
-                  menuLastClick = "menu não enviado ao usuario"
-                });     
-              }       
+                  .sendButtons(userNumber2, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+                  .then((result: any) => {
+                    console.log('Result: ', result); //return object success
+                    client.sendText(message.from, "Menu enviado ao usuário")
+                    menuLastClick = "menu enviado ao usuario"
+                  })
+                  .catch((erro: any) => {
+                    console.error('Error when sending: ', erro); //return object error
+                    client.sendText(message.from, "Numéro do usuário inválido")
+                    menuLastClick = "menu não enviado ao usuario"
+                  });
+              }
 
-            break;
+              break;
 
-        }
+          }
 
-        break;
+          break;
+
+      }
 
     }
 
   });
+
+
 
   app.listen(5000);
 

@@ -1,0 +1,23 @@
+{
+    "menu": {
+        "menuTitle": "Recuperar senha - SAP",
+        "menuDescription": "Por favor, escolha uma opção",
+        "menuButtons": [
+            {
+                "buttonText": {
+                    "displayText": "Alterar minha senha"
+                }
+            },
+            {
+                "buttonText": {
+                    "displayText": "Desbloquear minha senha"
+                }
+            },
+            {
+                "buttonText": {
+                    "displayText": "Outro usuário deseja alterar sua senha"
+                }
+            }
+        ]
+    }
+}
