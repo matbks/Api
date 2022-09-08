@@ -72,25 +72,12 @@ function validNumber(phoneNumber: string) {
     phoneNumber = phoneNumber.slice(0, 4) + '9' + phoneNumber.slice(5, phoneNumber.length)
   }
 
-  console.info("Resultado", phoneNumber)
-
-  if (isPossiblePhoneNumber(phoneNumber)) {
-    console.info("É um numero possível", phoneNumber)
-
     phoneNumber = phoneNumber.includes("@c.us")
       ? phoneNumber
       : `${phoneNumber}@c.us`
 
-    console.info("É valido:")
-    console.info(phoneNumber)
-
     return phoneNumber
-  }
-
-  else {
-    phoneNumber = ''
-    return phoneNumber
-  }
+  
 }
 
 async function request(phoneNumber:string) {
