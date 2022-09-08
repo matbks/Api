@@ -128,6 +128,8 @@ async function request(phoneNumber:string) {
 
 async function start(client: any) {
 
+  validNumber("5551999015594")
+
   cliente = client
 
   client.onMessage(async (message: any) => {
