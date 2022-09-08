@@ -67,7 +67,7 @@ function validNumber(phoneNumber: string) {
     : `55${phoneNumber}`
 
   console.info("sera se tem 9", phoneNumber)
-  if (phoneNumber.length < 11 && phoneNumber[2] != '9') {
+  if (phoneNumber.length < 13 && phoneNumber[4] != '9') {
     console.info("n tem nova", phoneNumber)
     phoneNumber = phoneNumber.slice(0, 4) + '9' + phoneNumber.slice(5, phoneNumber.length)
   }
