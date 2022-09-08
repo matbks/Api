@@ -51,7 +51,7 @@ app.post('/handle', function async(req, res) {
   console.info(req.body)
 });
 
-function validNumber(phoneNumber: string): string {
+function validNumber(phoneNumber: any): string {
 
   console.log("Validando", phoneNumber)
   phoneNumber = parsePhoneNumber(phoneNumber, "BR")
@@ -88,7 +88,7 @@ function turnIntoNumber(get: any): Promise<number> {
   });
 }
 
-async function request(phoneNumber: string) {
+async function request(phoneNumber:any) {
 
   // console.log("Requesting", phoneNumber)
   console.log("Requesting", phoneNumber)
@@ -227,8 +227,7 @@ async function start(client: any) {
 
               console.log("enviar mensagem ao usuario")
 
-              let phone = validNumber(newMessage)
-              let requestReturn
+              let phone = validNumber(newMessage) 
               console.log("Phone", phone)
 
               if (phone != '') {
