@@ -7,6 +7,7 @@ import * as screens from './screens.json'
 // const fs = require('fs');""
 let menuLastClick = ''
 import fetch, { Headers } from 'node-fetch';
+
 let cliente: Whatsapp
 
 const app = express()
@@ -49,14 +50,15 @@ create({
     console.log(erro);
   });
 
-  // POST method route
-app.post('/handle', function async (req, res) {
+// POST method route
+app.post('/handle', function async(req, res) {
   res.send(req.body);
   console.info(req.body)
 });
 
-function validNumber(phoneNumber: string) {
+function validNumber(phoneNumber: string):string {
 
+  console.log("Validando", phoneNumber)
   phoneNumber = parsePhoneNumber(phoneNumber, "BR")
     ?.format("E.164")
     ?.replace("+", "")
@@ -68,27 +70,36 @@ function validNumber(phoneNumber: string) {
 
   console.info("sera se tem 9", phoneNumber)
   console.info(phoneNumber[4])
-  if (phoneNumber.length < 13 && phoneNumber[4] != '9') {
+  if (phoneNumber.length < 13 ) {
     console.info("n tem nova", phoneNumber)
-    phoneNumber = phoneNumber.slice(0, 4) + '9' + phoneNumber.slice(5, phoneNumber.length)
+    phoneNumber = phoneNumber.slice(0, 4) + '9' + phoneNumber.slice(4, phoneNumber.length)  
   }
 
-    phoneNumber = phoneNumber.includes("@c.us")
-      ? phoneNumber
-      : `${phoneNumber}@c.us`
+  phoneNumber = phoneNumber.includes("@c.us")
+    ? phoneNumber
+    : `${phoneNumber}@c.us`
 
-        if (phoneNumber.length == 13) { } else { phoneNumber = '' }
+  if (phoneNumber.length == 18) { console.info("Sucesso"); console.info(phoneNumber) } else { console.info("erro"); console.info(phoneNumber); phoneNumber = '' }
 
-    return phoneNumber
-  
+  return phoneNumber
+
 }
 
-async function request(phoneNumber:string) {
 
-  console.log("Requesting")
+function turnIntoNumber(get: any): Promise<number> {
+  return new Promise((resolve, reject) => {
+    let shouldbeNumber: number = Number(get);
+    resolve(shouldbeNumber);
+  });
+}
+
+async function request(phoneNumber: string) {
+
+  // console.log("Requesting", phoneNumber)
+  console.log("Requesting", phoneNumber)
 
   const body = '<?xml version="1.0" encoding="UTF-8"?>' +
-    '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" '+
+    '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ' +
     'xmlns:urn="urn:sap-com:document:sap:soap:functions:mc-style">' +
     '<soapenv:Header/>' +
     '<soapenv:Body>' +
@@ -112,26 +123,50 @@ async function request(phoneNumber:string) {
     body: body
   });
 
-  console.log(responseLogin)
+  return responseLogin.status;
 
 }
 
 async function start(client: any) {
 
-  validNumber("5551999015594")
-
   cliente = client
 
   client.onMessage(async (message: any) => {
 
-    if (message.body) {
+    if (message.body && message.isGroupMsg === false) {
 
       let newMessage: string = message.body.toLowerCase()
 
       switch (newMessage) {
 
         case "sim":
+          console.log("enviando menu")
+          await client
+            .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+            .then((result: any) => {
+              console.log('Result: ', result); //return object success
+            })
+            .catch((erro: any) => {
+              console.error('Error when sending: ', erro); //return object error
+            });
 
+          break;
+
+        case "desbloquear":
+          console.log("enviando menu")
+          await client
+            .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+            .then((result: any) => {
+              console.log('Result: ', result); //return object success
+            })
+            .catch((erro: any) => {
+              console.error('Error when sending: ', erro); //return object error
+            });
+
+          break;
+
+        case "desbloquear senha":
+          console.log("enviando menu")
           await client
             .sendButtons(message.from, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
             .then((result: any) => {
@@ -153,7 +188,7 @@ async function start(client: any) {
 
           break;
 
-        case "outro usuário deseja alterar sua senha":
+        case "desbloquear a senha de outro usuário":
 
           console.log("outro usuário deseja alterar sua senha")
 
@@ -168,13 +203,21 @@ async function start(client: any) {
           console.log("Desbloquear minha senha")
 
           let phone = validNumber(message.from)
-          console.log ("Phone", phone)
-          if (phone != '') { 
-              request(phone); 
+          let requestReturn
+          console.log("Phone", phone)
+          if (phone != '') {
+            requestReturn = await request(phone.substring(0, 13));
           }
 
-          client.sendText(message.from, "Senha desbloqueada")
-
+          let requestRetur = await turnIntoNumber(requestReturn)
+          console.log("retorno", requestRetur)
+          if (requestRetur == 200) {
+            console.log("Senha desbloqueada com sucesso")
+            client.sendText(message.from, "Senha desbloqueada")
+          }
+          else {
+            client.sendText(message.from, "Falha no desbloqueio")
+          }
           menuLastClick = "senha desbloqueada"
 
           break;
@@ -199,50 +242,48 @@ async function start(client: any) {
 
               console.log("enviar mensagem ao usuario")
 
-              // ENVIAR NOVA SENHA PARA O SAP
-              // SE RETORAR SUCESSO EXIBE MENSAGEM
-              let userNumber = validNumber(newMessage)
+              let phone = validNumber(newMessage)
+              let requestReturn
+              console.log("Phone", phone)
 
-              if (userNumber != '') {
+              if (phone != '') {
 
-                client
-                  .sendButtons(userNumber, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+                console.log("enviando menu")
+                await client
+                  .sendButtons(phone, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
                   .then((result: any) => {
-                    console.log('Result: ', result); //return object success
-                    client.sendText(message.from, "Menu enviado ao usuário")
-                    menuLastClick = "menu enviado ao usuario"
-                  })
-                  .catch((erro: any) => {
-                    console.error('Error when sending: ', erro); //return object error
-                    client.sendText(message.from, "Numéro do usuário inválido")
-                    menuLastClick = "menu não enviado ao usuario"
-                  });
-              }
-              else {
-                client.sendText(message.from, "Numéro do usuário inválido")
+                          console.log('Result: ', result); //return object success
+                          client.sendText(message.from, "Menu enviado ao usuário")
+                          menuLastClick = "menu enviado ao usuario"
+                        })
+                        .catch((erro: any) => {
+                          console.error('Error when sending: ', erro); //return object error
+                          client.sendText(message.from, "Numéro do usuário inválido")
+                          menuLastClick = "menu não enviado ao usuario"
+                        });
               }
 
               break;
 
             default:
 
-              let userNumber2 = validNumber("8956065")
+              // let userNumber2 = validNumber("8956065")
 
-              if (userNumber2 != '') {
+              // if (userNumber2 != '') {
 
-                client
-                  .sendButtons(userNumber2, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
-                  .then((result: any) => {
-                    console.log('Result: ', result); //return object success
-                    client.sendText(message.from, "Menu enviado ao usuário")
-                    menuLastClick = "menu enviado ao usuario"
-                  })
-                  .catch((erro: any) => {
-                    console.error('Error when sending: ', erro); //return object error
-                    client.sendText(message.from, "Numéro do usuário inválido")
-                    menuLastClick = "menu não enviado ao usuario"
-                  });
-              }
+              //   client
+              //     .sendButtons(userNumber2, screens.menu.menuTitle, screens.menu.menuButtons, screens.menu.menuDescription)
+              //     .then((result: any) => {
+              //       console.log('Result: ', result); //return object success
+              //       client.sendText(message.from, "Menu enviado ao usuário")
+              //       menuLastClick = "menu enviado ao usuario"
+              //     })
+              //     .catch((erro: any) => {
+              //       console.error('Error when sending: ', erro); //return object error
+              //       client.sendText(message.from, "Numéro do usuário inválido")
+              //       menuLastClick = "menu não enviado ao usuario"
+              //     });
+              // }
 
               break;
 

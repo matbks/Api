@@ -2,15 +2,10 @@
 
 "menu" : 
     {   
-    "menuTitle" : "Recuperar senha - SAP",
-    "menuDescription" : "Por favor, escolha uma opção",
+    "menuTitle" : "Recuperação de senha SAP",
+    "menuDescription" : "Simple WMS",
     "menuButtons" : 
         [
-            {
-                "buttonText": {
-                    "displayText": "Alterar minha senha"
-                }
-            },
 
             {
                 "buttonText": {
@@ -20,7 +15,7 @@
 
             {
                 "buttonText": {
-                    "displayText": "Outro usuário deseja alterar sua senha"
+                    "displayText": "Desbloquear a senha de outro usuário"
                 }
             }
         ]
