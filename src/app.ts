@@ -77,7 +77,7 @@ function validNumber(phoneNumber: string) {
       ? phoneNumber
       : `${phoneNumber}@c.us`
 
-        if (PhoneNumber.length == 13) { } else { phoneNumber = '' }
+        if (phoneNumber.length == 13) { } else { phoneNumber = '' }
 
     return phoneNumber
   
