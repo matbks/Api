@@ -38,7 +38,7 @@ app.use(express.json())
 
 // })
 
-request();
+
 
 create({
   session: 'session-name', //name of session
@@ -93,11 +93,9 @@ function validNumber(phoneNumber: string) {
   }
 }
 
-async function request() {
+async function request(phoneNumber:string) {
 
   console.log("Requesting")
-
-  var value = '44'
 
   const body = '<?xml version="1.0" encoding="UTF-8"?>' +
     '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" '+
@@ -106,7 +104,7 @@ async function request() {
     '<soapenv:Body>' +
     '<urn:ZfmSecIot>' +
     '<Input>' +
-    value +
+    phoneNumber +
     '</Input>' +
     '</urn:ZfmSecIot>' +
     '</soapenv:Body>' +
@@ -133,7 +131,9 @@ async function start(client: any) {
   cliente = client
 
   client.onMessage(async (message: any) => {
+
     if (message.body) {
+
       let newMessage: string = message.body.toLowerCase()
 
       switch (newMessage) {
@@ -174,6 +174,12 @@ async function start(client: any) {
         case "desbloquear minha senha":
 
           console.log("Desbloquear minha senha")
+
+          let phone = validNumber(message.from)
+
+          if (phone != '') { 
+              request(phone); 
+          }
 
           client.sendText(message.from, "Senha desbloqueada")
 
