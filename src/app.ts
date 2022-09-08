@@ -1,4 +1,4 @@
-import parsePhoneNumber, { isValidPhoneNumber, isPossiblePhoneNumber } from "libphonenumber-js"
+import parsePhoneNumber, { isValidPhoneNumber, isPossiblePhoneNumber, PhoneNumber } from "libphonenumber-js"
 import { create, Whatsapp } from 'venom-bot';
 import express from 'express'
 import * as screens from './screens.json'
@@ -67,6 +67,7 @@ function validNumber(phoneNumber: string) {
     : `55${phoneNumber}`
 
   console.info("sera se tem 9", phoneNumber)
+  console.info(phoneNumber[4])
   if (phoneNumber.length < 13 && phoneNumber[4] != '9') {
     console.info("n tem nova", phoneNumber)
     phoneNumber = phoneNumber.slice(0, 4) + '9' + phoneNumber.slice(5, phoneNumber.length)
@@ -75,6 +76,8 @@ function validNumber(phoneNumber: string) {
     phoneNumber = phoneNumber.includes("@c.us")
       ? phoneNumber
       : `${phoneNumber}@c.us`
+
+        if (PhoneNumber.length == 13) { } else { phoneNumber = '' }
 
     return phoneNumber
   
