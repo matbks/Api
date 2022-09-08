@@ -176,7 +176,7 @@ async function start(client: any) {
           console.log("Desbloquear minha senha")
 
           let phone = validNumber(message.from)
-
+          console.log ("Phone", phone)
           if (phone != '') { 
               request(phone); 
           }
