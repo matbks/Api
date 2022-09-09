@@ -51,7 +51,7 @@ app.post('/handle', function async(req, res) {
   console.info(req.body)
 });
 
-function validNumber(phoneNumber: any): string {
+function validNumber(phoneNumber: string): string {
 
   console.log("Validando", phoneNumber)
   phoneNumber = parsePhoneNumber(phoneNumber, "BR")
